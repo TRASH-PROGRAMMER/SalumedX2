@@ -2,6 +2,7 @@ require 'sinatra'
 require 'json'
 require 'graphql'
 require 'rack/cors'
+require_relative './app/resolvers/farmacias_resolver'
 require_relative './schema/salumedx_schema'
 # Definición de la clase GraphqlService que hereda de Sinatra::Base
 class GraphqlService < Sinatra::Base

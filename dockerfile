@@ -1,13 +1,16 @@
 # Dockerfile
-FROM ruby:3.1
+FROM ruby:3.4
 
 WORKDIR /app
 
-COPY Gemfile Gemfile.lock* ./
-RUN bundle install --without development test
-
+# Copiar la aplicación
 COPY . .
 
+# Instalar sinatra
+RUN gem install sinatra
+
+# Puerto por defecto
 EXPOSE 4000
 
-CMD ["bundle", "exec", "ruby", "app.rb", "-o", "0.0.0.0", "-p", "4000"]
+# Comando para ejecutar la aplicación
+CMD ["ruby", "app.rb"]
