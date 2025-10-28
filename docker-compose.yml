@@ -4,8 +4,11 @@ services:
   graphql:
     build: .
     env_file:
+    
       - .env
     ports:
       - "4000:4000"
     depends_on: []
     restart: unless-stopped
+
+

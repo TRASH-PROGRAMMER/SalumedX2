@@ -4,7 +4,7 @@ class Farmacia
   attr_accessor :id, :nombre, :direccion, :lat, :lng, :distancia_km 
 # Constructor para inicializar una farmacia desde un hash de atributos
   def initialize(attrs = {})
-    @id = attrs['id']# 
+    @id = attrs['id']
     @nombre = attrs['nombre']
     @direccion = attrs['direccion']
     @lat = attrs['lat']

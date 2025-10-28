@@ -36,7 +36,7 @@ class GraphqlService < Sinatra::Base
     result = SalumedxSchema.execute(
       query,
       variables: variables,
-      context: context,
+      context: context,  
       operation_name: operation_name
     )
 # Responder con el resultado en formato JSON

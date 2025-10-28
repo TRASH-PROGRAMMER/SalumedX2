@@ -1,16 +1,16 @@
-# Dockerfile
-FROM ruby:3.4
+FROM ruby:3.3
 
 WORKDIR /app
 
-# Copiar la aplicación
+# Copiar solo Gemfile y Gemfile.lock primero (mejor para cache)
+COPY Gemfile Gemfile.lock ./
+
+# Instalar dependencias antes de copiar el resto
+RUN gem install bundler && bundle install
+
+# Ahora sí, copiar el resto del proyecto
 COPY . .
 
-# Instalar sinatra
-RUN gem install sinatra
-
-# Puerto por defecto
 EXPOSE 4000
 
-# Comando para ejecutar la aplicación
 CMD ["ruby", "app.rb"]

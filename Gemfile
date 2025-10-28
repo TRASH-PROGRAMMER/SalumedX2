@@ -1,13 +1,29 @@
 # Gemfile
 source 'https://rubygems.org'
 
+ruby '3.3.10'# Versión de Ruby que usaremos
+
+
+# --- Servidor web ---
 gem 'sinatra'
-gem 'sinatra-contrib'
-gem 'graphql'
+gem 'sinatra-contrib'   # para helpers como JSON, reloader, etc.
+gem 'puma'              # servidor web rápido, ideal para producción
+
+# --- GraphQL ---
+gem 'graphql'           # motor GraphQL
+gem 'batch-loader'      # mejora la eficiencia de resolvers
+
+# --- Middleware y utilidades ---
+gem 'rack'
 gem 'rack-contrib'
 gem 'rack-cors'
-gem 'json'
-gem 'faraday'
-gem 'batch-loader'
 gem 'rackup'
-gem 'puma'
+
+# --- JSON y HTTP ---
+gem 'json'
+gem 'faraday'           # cliente HTTP útil para consumir APIs externas
+
+# --- Herramientas de desarrollo (solo en modo dev) ---
+group :development do
+  gem 'rerun'           # reinicia el servidor automáticamente al cambiar archivos
+end
