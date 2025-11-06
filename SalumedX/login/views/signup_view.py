@@ -1,0 +1,47 @@
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+from django.contrib.auth.models import User
+from django.contrib.auth import login
+from django.db import IntegrityError
+from login.models import Medico, Paciente
+from login.serializers import MedicoSerializer, PacienteSerializer, UserSerializer
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def signup(request):
+    data = request.data
+    if data.get('password1') != data.get('password2'):
+        return Response({'success': False, 'error': 'Las contraseñas no coinciden'}, status=400)
+
+    username = data.get('username')
+    password = data.get('password1')
+    first_name = data.get('first_name', '')
+    last_name = data.get('last_name', '')
+    email = data.get('email', '')
+    tipo = data.get('tipo_usuario', 'paciente').lower()
+
+    try:
+        user = User.objects.create_user(username=username, password=password,
+                                       first_name=first_name, last_name=last_name, email=email)
+        user.save()
+
+        if tipo == 'medico':
+            numero_licencia = data.get('numero_licencia', '')
+            institucion = data.get('institucion', '')
+            ubicacion = data.get('ubicacion_consultorio', '')
+            medico = Medico.objects.create(user=user, numero_licencia=numero_licencia,
+                                           institucion=institucion, ubicacion_consultorio=ubicacion)
+            login(request, user)
+            return Response({'success': True, 'tipo_usuario': 'medico', 'perfil': MedicoSerializer(medico).data})
+        else:
+            fecha_nacimiento = data.get('fecha_nacimiento', None)
+            cedula = data.get('cedula', '')
+            direccion = data.get('direccion', '')
+            telefono = data.get('telefono', '')
+            paciente = Paciente.objects.create(user=user, fecha_nacimiento=fecha_nacimiento,
+                                               cedula=cedula, direccion=direccion, telefono=telefono)
+            login(request, user)
+            return Response({'success': True, 'tipo_usuario': 'paciente', 'perfil': PacienteSerializer(paciente).data})
+    except IntegrityError:
+        return Response({'success': False, 'error': 'El usuario ya existe'}, status=400)
