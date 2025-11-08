@@ -8,5 +8,7 @@ module Types
     field :precio, Float, null: false, description: "Precio del producto"
     field :stock, Integer, null: false, description: "Cantidad disponible en stock"
     field :farmacia_id, ID, null: false, description: "ID de la farmacia donde está disponible"
+    field :presentacion, String, null: true, description: "Presentación del producto (ej. Caja, Frasco, etc.)"
+    field :farmacia, Types::FarmaciaType, null: true, description: "Farmacia asociada al producto"
   end
 end
